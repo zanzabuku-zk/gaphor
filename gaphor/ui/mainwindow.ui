@@ -258,7 +258,7 @@
       </item>
       <item>
         <attribute name="label" translatable="yes">Open Json…</attribute>
-        <attribute name="action">app.file-open</attribute>
+        <attribute name="action">app.opjson-file-open</attribute>
       </item>
       <item>
         <attribute name="label" translatable="yes">Open Model…</attribute>

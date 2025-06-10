@@ -12,6 +12,7 @@ from gi.repository import Gio, GLib, Gtk
 from gaphor.i18n import gettext
 
 GAPHOR_FILTER = [(gettext("Gaphor Models"), "*.gaphor", "application/x-gaphor")]
+OPJSON_FILTER = [(gettext("Openpet Json Models"), "*.opjson", "application/x-gaphor")]
 
 
 def new_filter(name: str, pattern: str, mime_type: str | None = None) -> Gtk.FileFilter:
