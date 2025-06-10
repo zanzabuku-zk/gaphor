@@ -26,8 +26,8 @@ class AppFileManager(Service, ActionProvider):
     def window(self):
         return self.application.active_window
 
-    @action(name="app.opjson - file - open")
-    async def action_open(self):
+    @action(name="app.opjson-file-open")
+    async def action_opjson_open(self):
         """This menu action opens Openpet Json model open dialog."""
 
         filenames: list[Path] | None = await open_file_dialog(  # type: ignore[assignment]

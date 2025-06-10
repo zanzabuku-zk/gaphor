@@ -253,7 +253,7 @@
   <menu id="hamburger-menu">
     <section>
       <item>
-        <attribute name="label" translatable="yes">New Mod2el…</attribute>
+        <attribute name="label" translatable="yes">New Model…</attribute>
         <attribute name="action">app.new-window</attribute>
       </item>
       <item>
