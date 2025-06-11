@@ -108,12 +108,55 @@ class Application(Service, ActionProvider):
             force=force,
         )
 
+    def new_opjson_session(self, *, filename=None, template=None, services=None, force=False):
+        """Initialize an openpet json application session."""
+
+        filename = Path(filename) if filename else None
+
+        return self._spawn_opjson_session(
+            session=Session(services=services),
+            filename=filename,
+            template=template,
+            force=force,
+        )
+
     def recover_session(self, *, session_id, filename=None, template=None) -> Session:
         """Recover a (crashed) session."""
 
         return self._spawn_session(
             session=Session(session_id=session_id), filename=filename, template=template
         )
+
+    def _spawn_opjson_session(
+        self, session: Session, filename=None, template=None, force=False
+    ) -> Session:
+        @event_handler(ActiveSessionChanged)
+        def on_active_session_changed(_event):
+            logger.debug("Set active session to %s", session)
+            self._active_session = session
+
+        @event_handler(SessionShutdown)
+        def on_session_shutdown(_event):
+            self.shutdown_session(session)
+            if not self._sessions and not (
+                self._gtk_app and self._gtk_app.get_windows()
+            ):
+                self.shutdown()
+
+        event_manager = session.get_service("event_manager")
+        event_manager.subscribe(on_active_session_changed)
+        event_manager.subscribe(on_session_shutdown)
+
+        self._sessions.add(session)
+
+        session_created = SessionCreated(
+            self, session, filename, template, force, interactive=bool(self._gtk_app)
+        )
+        event_manager.handle(session_created)
+        self.event_manager.handle(session_created)
+        session.foreground()
+
+        return session
 
     def _spawn_session(
         self, session: Session, filename=None, template=None, force=False

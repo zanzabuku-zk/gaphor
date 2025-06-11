@@ -68,11 +68,11 @@ class AppFileManager(Service, ActionProvider):
                 dialog.present()
                 answer = await dialog.choose()
                 dialog.destroy()
-                self.application.new_session(
+                self.application.new_opjson_session(
                     filename=filename, force=(answer == "open")
                 )
             else:
-                self.application.new_session(filename=filename)
+                self.application.new_opjson_session(filename=filename)
 
             self.last_dir = os.path.dirname(filename)
 
